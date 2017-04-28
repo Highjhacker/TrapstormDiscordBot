@@ -35,7 +35,7 @@ async def random_trapstorm(message):
     soup = BeautifulSoup(html, "html.parser")
     res = soup.findAll('iframe')[0].get('src')
     res_corrected = res.replace('embed/', 'watch?v=').replace('?autoplay=1', '')
-    print(res2)
+    print(res_corrected)
     await client.send_message(message.channel, res_corrected)
 
 
