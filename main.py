@@ -2,8 +2,9 @@ import discord
 import asyncio
 import random
 import time
-import urllib.parse, urllib.request
+import urllib.parse, urllib.request, urllib.error
 from bs4 import BeautifulSoup
+from discord.ext import commands
 
 # https://discordapp.com/oauth2/authorize?&client_id=307514139926855680&scope=bot&permissions=0
 client = discord.Client()
@@ -16,7 +17,6 @@ async def on_ready():
     print('------')
 
 @client.event
-# Simple 50/50 coin toss
 async def coin_toss(message):
     outcome = random.randint(0,1)
     if outcome == 0:
@@ -38,6 +38,14 @@ async def random_trapstorm(message):
     print(res_corrected)
     await client.send_message(message.channel, res_corrected)
 
+@client.event
+async def user_page(message, nickname):
+    try:
+        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
+        await client.send_message(message.channel, response.geturl())
+    except urllib.error.HTTPError:
+        print("Error")
+        await client.send_message(message.channel, "L'utilisateur n'existe pas, pédale.")
 
 @client.event
 async def on_message(message):
@@ -50,5 +58,7 @@ async def on_message(message):
         await coin_toss(message)
     elif message.content.startswith('!random'):
         await random_trapstorm(message)
+    elif message.content.startswith('!user'):
+        await user_page(message, message.content.split()[1])
 
 client.run('MzA3NTE0MTM5OTI2ODU1Njgw.C-TaYA.QdZM0H1se-qdQIREqI2Gy70HiH8')
