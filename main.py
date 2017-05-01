@@ -84,14 +84,14 @@ async def add(left : int, right : int):
     """Adds two numbers together."""
     await bot.say(left + right)
 
-@bot.command()
-async def user_page(message, nickname):
+@bot.command(name="user")
+async def user_page(nickname):
     try:
         response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
-        await bot.say(message.channel, response.geturl())
+        await bot.say(response.geturl())
     except urllib.error.HTTPError:
         print("Error")
-        await bot.say(message.channel, "L'utilisateur n'existe pas, pédale.")
+        await bot.say("L'utilisateur n'existe pas, pédale.")
 
 @bot.command()
 async def roll(dice : str):
