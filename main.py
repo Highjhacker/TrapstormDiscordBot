@@ -64,6 +64,8 @@ async def on_message(message):
 import discord
 from discord.ext import commands
 import random
+import urllib.parse, urllib.request, urllib.error
+
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -81,6 +83,15 @@ async def on_ready():
 async def add(left : int, right : int):
     """Adds two numbers together."""
     await bot.say(left + right)
+
+@bot.command()
+async def user_page(message, nickname):
+    try:
+        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
+        await bot.say(message.channel, response.geturl())
+    except urllib.error.HTTPError:
+        print("Error")
+        await bot.say(message.channel, "L'utilisateur n'existe pas, pédale.")
 
 @bot.command()
 async def roll(dice : str):
