@@ -71,7 +71,7 @@ async def on_ready():
     print('------')
 
 @bot.command(name='rand')
-async def random_trapstorm(message):
+async def random_trapstorm():
     base_url = "http://www.trapstorm.com/randomsong"
     response = urllib.request.urlopen(base_url)
     html = response.read()
