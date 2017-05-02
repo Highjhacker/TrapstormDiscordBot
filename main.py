@@ -39,15 +39,6 @@ async def random_trapstorm(message):
     await client.send_message(message.channel, res_corrected)
 
 @client.event
-async def user_page(message, nickname):
-    try:
-        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
-        await client.send_message(message.channel, response.geturl())
-    except urllib.error.HTTPError:
-        print("Error")
-        await client.send_message(message.channel, "L'utilisateur n'existe pas, pédale.")
-
-@client.event
 async def on_message(message):
     if message.content.startswith('!sleep'):
         await asyncio.sleep(5)
@@ -64,6 +55,9 @@ async def on_message(message):
 import discord
 from discord.ext import commands
 import random
+import urllib.parse, urllib.request, urllib.error
+from bs4 import BeautifulSoup
+
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -76,6 +70,27 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.command(name='user')
+async def user_page(message, nickname):
+    try:
+        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
+        await bot.say(response.geturl())
+    except urllib.error.HTTPError:
+        print("Error")
+        await bot.say("L'utilisateur n'existe pas, pédaleee.")
+
+@bot.command(name='rand')
+async def random_trapstorm(message):
+    base_url = "http://www.trapstorm.com/randomsong"
+    response = urllib.request.urlopen(base_url)
+    html = response.read()
+    soup = BeautifulSoup(html, "html.parser")
+    res = soup.findAll('iframe')[0].get('src')
+    res_corrected = res.replace('embed/', 'watch?v=').replace('?autoplay=1', '')
+    print(res_corrected)
+    await bot.say(res_corrected)
+
 
 @bot.command()
 async def add(left : int, right : int):
