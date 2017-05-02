@@ -70,15 +70,6 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-@bot.command(name='user')
-async def user_page(message, nickname):
-    try:
-        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
-        await bot.say(response.geturl())
-    except urllib.error.HTTPError:
-        print("Error")
-        await bot.say("L'utilisateur n'existe pas, pédaleee.")
-
 @bot.command(name='rand')
 async def random_trapstorm(message):
     base_url = "http://www.trapstorm.com/randomsong"
@@ -89,7 +80,6 @@ async def random_trapstorm(message):
     res_corrected = res.replace('embed/', 'watch?v=').replace('?autoplay=1', '')
     print(res_corrected)
     await bot.say(res_corrected)
-
 
 @bot.command()
 async def add(left : int, right : int):
