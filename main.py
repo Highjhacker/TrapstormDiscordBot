@@ -56,11 +56,7 @@ import discord
 from discord.ext import commands
 import random
 import urllib.parse, urllib.request, urllib.error
-<<<<<<< HEAD
 from bs4 import BeautifulSoup
-=======
->>>>>>> c90d79a87109d44dae5695fd70e7625e07370d26
-
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
