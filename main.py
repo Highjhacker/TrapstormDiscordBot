@@ -56,7 +56,10 @@ import discord
 from discord.ext import commands
 import random
 import urllib.parse, urllib.request, urllib.error
+<<<<<<< HEAD
 from bs4 import BeautifulSoup
+=======
+>>>>>>> c90d79a87109d44dae5695fd70e7625e07370d26
 
 
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -96,6 +99,15 @@ async def random_trapstorm(message):
 async def add(left : int, right : int):
     """Adds two numbers together."""
     await bot.say(left + right)
+
+@bot.command(name="user")
+async def user_page(nickname):
+    try:
+        response = urllib.request.urlopen("http://www.trapstorm.com/user/%s" % nickname)
+        await bot.say(response.geturl())
+    except urllib.error.HTTPError:
+        print("Error")
+        await bot.say("L'utilisateur n'existe pas, pédale.")
 
 @bot.command()
 async def roll(dice : str):
