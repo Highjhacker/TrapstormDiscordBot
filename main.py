@@ -53,6 +53,7 @@ async def on_message(message):
         await user_page(message, message.content.split()[1])
 """
 import discord
+import requests
 from discord.ext import commands
 import random
 import urllib.parse, urllib.request, urllib.error
@@ -61,7 +62,7 @@ from bs4 import BeautifulSoup
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
-bot = commands.Bot(command_prefix='?', description=description)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("$"), description=description)
 
 @bot.event
 async def on_ready():
@@ -119,9 +120,14 @@ async def repeat(times : int, content='repeating...'):
         await bot.say(content)
 
 @bot.command()
-async def joined(member : discord.Member):
+async def joined(member: discord.Member):
     """Says when a member joined."""
     await bot.say('{0.name} joined in {0.joined_at}'.format(member))
+
+@bot.command(name='bl')
+async def testrequest():
+    r = requests.get("http://www.trapstorm.com/api/v1.0/users/3")
+    await bot.say(r.json())
 
 @bot.group(pass_context=True)
 async def cool(ctx):
