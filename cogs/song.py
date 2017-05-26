@@ -1,5 +1,6 @@
 import requests
 from discord.ext import commands
+import json
 
 
 class Song:
@@ -13,12 +14,19 @@ class Song:
 
     @commands.command(name="song")  # maybe pass_context
     async def get_song(self, id):
-        r = requests.get(Song.BASE_URL_API + "/%s" % id)
-        r_url = r.json()['address']
-        if "soundcloud" in r_url:
-            await self.bot.say(r_url)
-        else:
-            await self.bot.say("https://www.youtube.com/watch?v=" + r_url)
+        try:
+            r = requests.get(Song.BASE_URL_API + "/%s" % id)
+            r_url = r.json()['address']
+            if "soundcloud" in r_url:
+                await self.bot.say(r_url)
+            else:
+                await self.bot.say("https://www.youtube.com/watch?v=" + r_url)
+        except json.JSONDecodeError as e:
+            print(e)
+            await self.bot.say("Impossible de trouver la chanson demandée.")
+        except commands.CommandError as e:
+            print(e)
+            await self.bot.say("Commande erronée, la syntaxe est: song [id].")
 
     @commands.command(name="randomsong")
     async def get_random_song(self):
@@ -29,7 +37,7 @@ class Song:
         else:
             await self.bot.say("https://www.youtube.com/watch?v=" + r_url)
 
-    @commands.command(name="randomwithtag")
+    @commands.command(name="tag")
     async def random_song_with_tag(self, tag_name):
         r = requests.get(Song.BASE_URL_API + "/random/%s" % tag_name)
         r_url = r.json()['address']
