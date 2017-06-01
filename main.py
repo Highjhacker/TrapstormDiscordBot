@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
-import asyncio
+import sys
+import traceback
+import os
 
 """
 Note : S'assurer de ne pas envoyer de message au bot qui pourrait dépasser les 2000 caractères
@@ -50,4 +52,4 @@ if __name__ == '__main__':
             bot.load_extension(extension)
         except Exception as e:
             print('Failed to load extension {}\n{}: {}'.format(extension, type(e).__name__, e))
-    bot.run('MzA3NTE0MTM5OTI2ODU1Njgw.C_TU4Q.EMWsFqUAkT0c3GRJ8pBHwJzOgho')
+    bot.run(os.environ.get('DISCORD_PRIVATE_KEY'))
