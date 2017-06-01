@@ -46,6 +46,8 @@ class Song:
         else:
             await self.bot.say("https://www.youtube.com/watch?v=" + r_url)
 
+    # Implémenter une météhode qui permet d'aller chopper la liste des tags existants sur trapstorm
+
 
 def setup(bot):
     bot.add_cog(Song(bot))
